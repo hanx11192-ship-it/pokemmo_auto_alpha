@@ -25,7 +25,7 @@ https://wxpusher.zjiecode.com/wxuser/?type=2&id=45385#/follow
 ## 环境变量配置
 | 环境变量 | 有效值 | 说明 |
 |---|---|---|
-| alpha_debug | `0` / `1` | 调试模式开关。`1`：开启调试，API响应保存至 `alphadebug.json`；`0`：关闭调试 |
+| alpha_debug | `0` / `1` | 调试模式开关。`1`：开启调试，读取 `alphadebug.json`；`0`：正常请求api |
 | WXPUSHER_TOKEN_APP_alpha | 字符串 | WxPusher 推送Token |
 
 ## 致谢
