@@ -1,0 +1,39 @@
+{
+  "state_id": 1,
+  "code": 0,
+  "msg": "查询时间:16:36:55\n当前时区:Asia/Shanghai",
+  "data": [
+    {
+      "id": 2333,
+      "timestamp": 1785399950000,
+      "time_uncheck": 0,
+      "user_id": 2,
+      "user_ign": "Lanbizi",
+      "monster_id": 7300,
+      "location_id": 15102,
+      "move1": "冲浪",
+      "move2": "污泥炸弹",
+      "move3": "冰冻光束",
+      "move4": "终极吸取",
+      "hm_id": 2,
+      "description": null,
+      "plug": 0,
+      "valid": 1,
+      "location_full_name": "[城都]47号道路",
+      "year": 2026,
+      "month": 7,
+      "day": 30,
+      "date_str": "2026-07-30",
+      "start_hour": 16,
+      "start_minute": 25,
+      "start_time_str": "16:25",
+      "end_hour": 17,
+      "end_minute": 40,
+      "end_time_str": "17:40",
+      "timezone": "Asia/Shanghai",
+      "user_dress_url": "https://cdn.api.pokemmo.com.cn/static/dress/2/1/0/2265/0/1189/2259/0/1303d10/1056/0/1326d10/1221d10.png",
+      "text": "[16:25~17:40][毒刺水母<雨盘>[水3组]<公4母4>[[城都]47号道路][招式:冲浪,污泥炸弹,冰冻光束,终极吸取][技能机:冲浪][报点人:@Lanbizi]"
+    }
+  ],
+  "tip": false
+}
