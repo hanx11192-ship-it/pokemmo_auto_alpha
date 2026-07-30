@@ -9,7 +9,7 @@ Pokemmo 头目自动报点并自动给出打法推
 https://wxpusher.zjiecode.com/wxuser/?type=2&id=45385#/follow
 
 ## 🎮 自用甜蜜头目队伍配置
-![自用甜蜜脚本队伍配置](./team.png)
+![自用甜蜜脚本队伍配置](./17854176540392.png)
 
 
 ## 防止我自己忘了
