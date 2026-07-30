@@ -5,7 +5,7 @@
 Pokemmo 头目自动报点并自动给出打法推
 
 ## 项目成品‑WxPusher订阅链接（接收推送）
-> url:
+> 安装wxpusher后打开下面链接截图，打开wxpusher扫描即可
 https://wxpusher.zjiecode.com/wxuser/?type=2&id=45385#/follow
 
 ## 🎮 自用甜蜜头目队伍配置
