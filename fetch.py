@@ -59,10 +59,10 @@ def get_current_period_str():
     hour = datetime.now().hour
     if 8 <= hour < 14:
         return "8-14"
-    elif 14 <= hour < 22:
-        return "14-22"
-    elif hour >= 22 or hour < 2:
-        return "22-2"
+    elif 14 <= hour < 20:
+        return "14-20"
+    elif hour >= 20 or hour < 2:
+        return "20-2"
     else:
         return "2-8"
 
