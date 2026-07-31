@@ -92,7 +92,16 @@ def parse_boss_data(boss_info):
         if move:
             moves.append(move)
 
-    location = boss_info.get('location_full_name')
+    location_full = boss_info.get('location_full_name', '')
+    description = boss_info.get('description')
+    if description is None:
+        description = ''
+    else:
+        description = description.strip()
+    if description:
+        location = f"{location_full} - {description}"
+    else:
+        location = location_full
 
     monster_id = boss_info.get('monster_id')
     pokedex_id = None
