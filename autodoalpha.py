@@ -1,3 +1,31 @@
+
+
+egg_group_map = {
+     "monster": "怪兽",
+     "water1": "水中1",
+     "bug": "虫",
+     "flying": "飞行",
+     "field": "陆上",
+     "ground": "陆上",   
+     "fairy": "妖精",
+     "plant": "植物",
+     "humanshape": "人形",
+     "water3": "水中3",
+     "mineral": "矿物",
+     "indeterminate": "不定形",
+     "water2": "水中2",
+     "ditto": "百变怪",
+     "dragon": "龙",
+     "no‑eggs": "未发现"
+ }
+
+# 白名单：即使非双性别也强制生成甜蜜球方案
+WHITELIST = {"艾路雷朵"}  
+
+
+
+
+
 #队伍顺序
 def get_team_order(alphainfor):
     def_config_poke = ["沙奈朵", "长耳兔", "图图犬", "呆壳兽"]
@@ -126,25 +154,28 @@ def generate_strategy(alphainfor):
     if not alphainfor:
         return {"error": "解析头目信息失败"}
 
-    # 构建头部
+    # 获取必要字段
     period = alphainfor.get('时段', '未知时段').replace('~', '-')
     name = alphainfor.get('头目名称', '未知')
     ability = alphainfor.get('特性', '无特性')
     gender_rate = alphainfor.get('gender_rate')
     if gender_rate is not None:
-      rate_str = f"{gender_rate}%公"
+        rate_str = f"{gender_rate}%公"
     else:
-      rate_str = "无性别"
+        rate_str = "无性别"
     location = alphainfor.get('完整地点', '未知地点')
     moves = alphainfor.get('技能', [])
     moves_str = ", ".join(moves) if moves else "无"
     egg_groups = alphainfor.get('egg_groups', [])
-    egg_str = ", ".join(egg_groups) if egg_groups else "无"
+    
+    # ---------- 蛋组中文转换 ----------
+    cn_egg_groups = [EGG_GROUP_CN.get(g, g) for g in egg_groups]  # 若映射不到则保留原值
+    egg_str = ", ".join(cn_egg_groups) if cn_egg_groups else ""
 
-    # 构建第二行：头目(特性)-蛋组（有则加）-性别率
+    # 构建头部
     second_line = f"{name}({ability})"
     if egg_str:
-        second_line += f"-{egg_str}"
+        second_line += f"-({egg_str})"
     second_line += f"-{rate_str}"
 
     header_lines = [
@@ -154,8 +185,13 @@ def generate_strategy(alphainfor):
         f"技能: {moves_str}"
     ]
 
-    # 判断是否为双性别（0 < rate < 100）
-    is_dual_gender = (gender_rate is not None and 0 < gender_rate < 100)
+    # ---------- 双性别判断（包含白名单） ----------
+    is_dual_gender = False
+    # 白名单强制双性别
+    if name in WHITELIST:
+        is_dual_gender = True
+    elif gender_rate is not None and 0 < gender_rate < 100:
+        is_dual_gender = True
 
     if is_dual_gender:
         # 生成队伍配招（原有逻辑）
@@ -186,7 +222,6 @@ def generate_strategy(alphainfor):
             simple_lines.append(f"{pokemon}：{skills_str}")
         team_text = "\n".join(simple_lines)
 
-        # 完整报告 = 头部 + 队伍
         full_report = "\n".join(header_lines) + "\n打法推荐：\n" + team_text
         reporter = alphainfor.get('报点人')
         if reporter:
@@ -194,12 +229,11 @@ def generate_strategy(alphainfor):
     else:
         # 纯公/纯母/无性别，不生成队伍
         full_report = "\n".join(header_lines)
-   
+
     return {
         "头目": alphainfor,
         "文本报告": full_report
     }
-
 # ==================== 测试 ====================
 if __name__ == '__main__':
     # 模拟新版 fetch_boss 返回的字典（英文字段）
