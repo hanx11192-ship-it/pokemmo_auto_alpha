@@ -84,8 +84,7 @@ def parse_boss_data(boss_info):
     period = f"{start}~{end}" if start and end else None
 
     text = boss_info.get('text', '')
-    ability = extract_ability(text)
-
+    
     moves = []
     for i in range(1, 5):
         move = boss_info.get(f'move{i}')
@@ -108,18 +107,24 @@ def parse_boss_data(boss_info):
     if monster_id is not None:
         pokedex_id = int(monster_id / 100)
 
-    pokedex_data = {}
+    # 初始化 pokedex_data（必须在使用前）
+    pokedex_data = {
+        'official_name': None,
+        'gender_rate': None,
+        'egg_groups': [],
+        'hidden_ability': None
+    }
     if pokedex_id is not None and str(pokedex_id) in POKEMON_DATA:
         pkm = POKEMON_DATA[str(pokedex_id)]
         pokedex_data['official_name'] = pkm.get('name')
         pokedex_data['gender_rate'] = pkm.get('rate')
         pokedex_data['egg_groups'] = pkm.get('group', [])
-    else:
-        pokedex_data['official_name'] = None
-        pokedex_data['gender_rate'] = None
-        pokedex_data['egg_groups'] = []
+        pokedex_data['hidden_ability'] = pkm.get('hidden_ability')
+
+    # 现在从 pokedex_data 获取特性（不再使用正则）
+    ability = pokedex_data.get('hidden_ability')
     
-    reporter = extract_reporter(text)   
+    reporter = extract_reporter(text)
     return {
         'reporter': reporter,
         'period': period,
@@ -132,7 +137,6 @@ def parse_boss_data(boss_info):
         'gender_rate': pokedex_data['gender_rate'],
         'egg_groups': pokedex_data['egg_groups']
     }
-
 def fetch_boss():
     debug = int(os.environ.get('alpha_debug', '0'))
 
