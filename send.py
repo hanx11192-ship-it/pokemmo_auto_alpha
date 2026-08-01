@@ -23,9 +23,9 @@ def send(content, summary=None):
         t = get_current_period_str()
         if t == "8-14":
             summary = "早头"
-        elif t == "14-22":
+        elif t == "14-20":
             summary = "午头"
-        elif t == "22-2":
+        elif t == "20-2":
             summary = "晚头"
         else:
             summary = "凌晨头"
