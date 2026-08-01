@@ -1,23 +1,6 @@
 
 
-egg_group_map = {
-     "monster": "怪兽",
-     "water1": "水中1",
-     "bug": "虫",
-     "flying": "飞行",
-     "field": "陆上",
-     "ground": "陆上",   
-     "fairy": "妖精",
-     "plant": "植物",
-     "humanshape": "人形",
-     "water3": "水中3",
-     "mineral": "矿物",
-     "indeterminate": "不定形",
-     "water2": "水中2",
-     "ditto": "百变怪",
-     "dragon": "龙",
-     "no‑eggs": "未发现"
- }
+
 
 # 白名单：即使非双性别也强制生成甜蜜球方案
 WHITELIST = {"艾路雷朵"}  
@@ -168,9 +151,8 @@ def generate_strategy(alphainfor):
     moves_str = ", ".join(moves) if moves else "无"
     egg_groups = alphainfor.get('egg_groups', [])
     
-    # ---------- 蛋组中文转换 ----------
-    cn_egg_groups = [EGG_GROUP_CN.get(g, g) for g in egg_groups]  # 若映射不到则保留原值
-    egg_str = ", ".join(cn_egg_groups) if cn_egg_groups else ""
+    # ----蛋组拼接
+    egg_str = ", ".join(egg_groups) if egg_groups else ""
 
     # 构建头部
     second_line = f"{name}({ability})"
