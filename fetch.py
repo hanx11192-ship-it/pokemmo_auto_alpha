@@ -2,6 +2,7 @@ import requests
 import json
 import re
 import os
+import time
 import importlib.util
 import sys
 from datetime import datetime
@@ -192,20 +193,42 @@ def fetch_boss():
     else:
         print("=== 正常模式 ===")
         try:
-            resp = requests.post(API_URL, data=json.dumps({}), headers=HEADERS, timeout=10)
-            resp.raise_for_status()
-            data = resp.json()
-            if data.get('code') != 0:
-                print(f"API 返回错误: {data.get('msg')}")
+            def request_and_parse():
+                resp = requests.post(API_URL, data=json.dumps({}), headers=HEADERS, timeout=10)
+                resp.raise_for_status()
+                data = resp.json()
+                if data.get('code') != 0:
+                    print(f"API 返回错误: {data.get('msg')}")
+                    return None
+                boss_list = data.get('data', [])
+                if not boss_list:
+                    print("当前时段没有头目（data 为空）")
+                    return None
+                return parse_boss_data(boss_list[0])
+
+            parsed = request_and_parse()
+            if parsed is None:
                 return False
 
-            boss_list = data.get('data', [])
-            if not boss_list:
-                print("当前时段没有头目（data 为空）")
-                return False
+            # 技能解析失败（moves 为空）时重新请求 API，最多重试 3 次：立即、0.5s、1s
+            retry_delays = [0, 0.5, 1]
+            if not parsed.get('moves'):
+                print("头目技能解析失败（moves 为空），重新请求 API 重试...")
+                for i, delay in enumerate(retry_delays, 1):
+                    if delay > 0:
+                        time.sleep(delay)
+                    retry_parsed = request_and_parse()
+                    if retry_parsed is None:
+                        print(f"第 {i} 次重试请求失败")
+                        continue
+                    if retry_parsed.get('moves'):
+                        print(f"第 {i} 次重试后技能解析成功")
+                        parsed = retry_parsed
+                        break
+                    print(f"第 {i} 次重试后技能仍为空")
+                else:
+                    print("3 次重试均未解析到技能，继续按兜底流程处理。")
 
-            boss_info = boss_list[0]
-            parsed = parse_boss_data(boss_info)
             print("头目信息解析成功：")
             for key, value in parsed.items():
                 print(f"  {key}: {value}")
